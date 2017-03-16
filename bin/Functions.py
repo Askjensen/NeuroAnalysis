@@ -1,7 +1,6 @@
 # coding=utf-8
 import os
-
-import math
+import sys
 
 import math
 import warnings
@@ -176,22 +175,22 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     histphasicVSpeaksx.GetXaxis().SetRangeUser(0, maxvalx)
     histphasicVSpeaksx.Draw()
     canvas.Update()
-    histphasicVSpeaksx.SaveAs('../out/rootfiles/phasicVSpeaksx_' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/phasicVSpeaksx_' + name + 'overview' + '.png')
+    histphasicVSpeaksx.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/phasicVSpeaksx_' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/phasicVSpeaksx_' + name + 'overview' + '.png'))
 
     histtonicVSpeaksx.GetYaxis().SetRangeUser(0, maxvaly * 1.3)
     histtonicVSpeaksx.GetXaxis().SetRangeUser(0, maxvalx)
     histtonicVSpeaksx.Draw()
     canvas.Update()
-    histtonicVSpeaksx.SaveAs('../out/rootfiles/tonicVSpeaksx_' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/tonicVSpeaksx_' + name + 'overview' + '.png')
+    histtonicVSpeaksx.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/tonicVSpeaksx_' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/tonicVSpeaksx_' + name + 'overview' + '.png'))
 
     histphasicVStonic.GetYaxis().SetRangeUser(0, maxvaly * 1.3)
     histphasicVStonic.GetXaxis().SetRangeUser(0, maxvalx)
     histphasicVStonic.Draw()
     canvas.Update()
-    histphasicVStonic.SaveAs('../out/rootfiles/phasicVStonic_' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/phasicVStonic_' + name + 'overview' + '.png')
+    histphasicVStonic.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/phasicVStonic_' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/phasicVStonic_' + name + 'overview' + '.png'))
 
     #save 1D
     histpeaksfull.GetYaxis().SetRangeUser(0, maxvaly*1.3)
@@ -199,24 +198,24 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     histpeaksfull.Draw()
     #leg.Draw()
     canvas.Update()
-    histpeaksfull.SaveAs('./../out/rootfiles/timedistributionof' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/timedistributionof_' + name + 'overview' + '.png')
+    histpeaksfull.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionof' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionof_' + name + 'overview' + '.png'))
 
     histrawEDA.GetYaxis().SetRangeUser(0, histpeaksphasicamp.GetMaximum()*1.3)
     histrawEDA.GetXaxis().SetRangeUser(0, maxvalx)
     histrawEDA.Draw()
     canvas.Update()
-    histrawEDA.SaveAs('../out/rootfiles/timedistributionofrawEDAsignal' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/timedistributionofrawEDAsignal' + name + 'overview' + '.png')
+    histrawEDA.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionofrawEDAsignal' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionofrawEDAsignal' + name + 'overview' + '.png'))
 
     histpeaksphasicamp.GetYaxis().SetRangeUser(0, histpeaksphasicamp.GetMaximum()*1.3)
     histpeaksphasicamp.GetXaxis().SetRangeUser(0, maxvalx)
     histpeaksphasicamp.Draw()
     #leg.Draw()
     canvas.Update()
-    histpeaksphasicamp.SaveAs('../out/rootfiles/timedistributionofpeaksxphasic' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/rootfiles/ctimedistributionofpeaksxphasic' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/timedistributionofpeaksxphasic' + name + 'overview' + '.png')
+    histpeaksphasicamp.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionofpeaksxphasic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/ctimedistributionofpeaksxphasic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionofpeaksxphasic' + name + 'overview' + '.png'))
 
     histphasicfull.GetXaxis().SetRangeUser(0, maxvalx)
     maxvaly=histphasicfull.GetMaximum()
@@ -224,9 +223,9 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     histphasicfull.Draw()
     #leg.Draw()
     canvas.Update()
-    histphasicfull.SaveAs('../out/rootfiles/timedistributionofphasic' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/rootfiles/ctimedistributionof_phasic' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/timedistributionof_phasic' + name + 'overview' + '.png')
+    histphasicfull.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionofphasic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/ctimedistributionof_phasic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionof_phasic' + name + 'overview' + '.png'))
 
     maxvaly=histtonicfull.GetMaximum()
     histtonicfull.GetXaxis().SetRangeUser(0, maxvalx)
@@ -234,9 +233,9 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     histtonicfull.Draw()
     #leg.Draw()
     canvas.Update()
-    histtonicfull.SaveAs('../out/rootfiles/timedistributionoftonic' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/rootfiles/ctimedistributionof_tonic' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/timedistributionof_tonic' + name + 'overview' + '.png')
+    histtonicfull.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionoftonic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/ctimedistributionof_tonic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionof_tonic' + name + 'overview' + '.png'))
 
     histtonicfull.SetFillColor(1)
     histphasicfull.SetFillColor(2)
@@ -246,8 +245,8 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     hs.Add(histphasicfull)
     hs.Draw()
     canvas.Update()
-    canvas.SaveAs('../out/rootfiles/stacked_' + name + 'overview' + '.root')
-    canvas.SaveAs('../out/results/stacked_' + name + 'overview' + '.png')
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/stacked_' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/stacked_' + name + 'overview' + '.png'))
     canvas.Close()
 
 
@@ -426,8 +425,8 @@ def npeaksspecificminutes(comparisonlist, dataarray, dataset_index_sub, name, ti
             peakarray[ievent].Draw("same")
         leg.Draw()
         canvas.Update()
-        canvas.SaveAs('../out/rootfiles/timedistributionof' + name + 'inseq' + ikey + '.root')
-        canvas.SaveAs('../out/results/timedistributionof' + name + 'inseq' + ikey + '.png')
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionof' + name + 'inseq' + ikey + '.root'))
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionof' + name + 'inseq' + ikey + '.png'))
 
         histphasic.GetXaxis().SetRangeUser(0, maxvalx)
         histphasic.Draw()
@@ -439,8 +438,8 @@ def npeaksspecificminutes(comparisonlist, dataarray, dataset_index_sub, name, ti
         histphasic.GetYaxis().SetRangeUser(0, maxvaly * 1.3)
         leg.Draw()
         canvas.Update()
-        canvas.SaveAs('../out/rootfiles/timedistributionofphasic' + name + 'inseq' + ikey + '.root')
-        canvas.SaveAs('../out/results/timedistributionofphasic' + name + 'inseq' + ikey + '.png')
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionofphasic' + name + 'inseq' + ikey + '.root'))
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionofphasic' + name + 'inseq' + ikey + '.png'))
 
         maxvaly = 0
         histtonic.GetXaxis().SetRangeUser(0, maxvalx)
@@ -452,8 +451,8 @@ def npeaksspecificminutes(comparisonlist, dataarray, dataset_index_sub, name, ti
         histtonic.GetYaxis().SetRangeUser(0, maxvaly * 1.3)
         leg.Draw()
         canvas.Update()
-        canvas.SaveAs('../out/rootfiles/timedistributionoftonic' + name + 'inseq' + ikey + '.root')
-        canvas.SaveAs('../out/results/timedistributionoftonic' + name + 'inseq' + ikey + '.png')
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionoftonic' + name + 'inseq' + ikey + '.root'))
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionoftonic' + name + 'inseq' + ikey + '.png'))
         # print >> f, "\n KS probability including normalisation of " + str(comparisonlist[ikey][0]) + " and " + str(comparisonlist[ikey][1])
         # print >> f, histarray[0].KolmogorovTest(histarray[1], "OUN")
         # print >> f, "\n KS Comparison of " + str(comparisonlist[ikey][0]) + " and " + str(comparisonlist[ikey][1])
@@ -552,9 +551,9 @@ def npeaksspecific(comparisonlist, dataarray, dataset_index_sub, name):
         # print >> f, histarray[0].Chi2Test(histarray[1], "UU")
         # print >> f, "\n mean " + str(comparisonlist[ikey][0]) + ": " + str(histarray[0].GetMean()) + "standard deviation: " + str(histarray[0].GetRMS())
         # print >> f, "mean " + str(comparisonlist[ikey][1]) + ": " + str(histarray[1].GetMean()) + "standard deviation: " + str(histarray[1].GetRMS())
-        #canvas.SaveAs('../out/rootfiles/numberof' + name + 'inseq' + ikey + '.root')
-        histogram.SaveAs('../out/rootfiles/numberof' + name + 'inseq' + ikey + '.root')
-        canvas.SaveAs('../out/results/numberof' + name + 'inseq' + ikey + '.png')
+        #canvas.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/numberof' + name + 'inseq' + ikey + '.root'))
+        histogram.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/numberof' + name + 'inseq' + ikey + '.root'))
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/results/numberof' + name + 'inseq' + ikey + '.png'))
         histogram.Delete()
         canvas.Close()
 
@@ -617,8 +616,8 @@ def meaninterval(dataset_index_sub, dataarray, comparisonlist,timewindow,name):
             histarray[ievent].Draw("same")
         leg.Draw()
         canvas.Update()
-        #histogram.SaveAs('../out/rootfiles/compinterval'+name+ikey+'.root')
-        canvas.SaveAs('../out/results/compinterval'+name+ikey+'.root')
+        #histogram.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/compinterval'+name+ikey+'.root'))
+        canvas.SaveAs(os.path.join(sys.path[0],'../out/results/compinterval'+name+ikey+'.root'))
         canvas.Close()
         return
 
@@ -723,7 +722,7 @@ def npeaks(dataset_index_sub, dataarray,name,type):
         #             bg = s.Background(hist, 20, "Compton nodraw")
         #             currentsettings = respondent + 'sigma' + str(sigma) + 'thres' + str(thres) + 'res' + str(res)
         #             cvs.Update()
-        #             cvs.SaveAs(os.path.join(os.getcwd(), '../out/peaks/noMarkov' + currentsettings + '.png'))
+        #             cvs.SaveAs(os.path.join(os.getcwd(), './../out/peaks/noMarkov' + currentsettings + '.png'))
         #             cvs.Close()
         #
         #             cmark = TCanvas("c", "c", 1200, 800)
@@ -733,7 +732,7 @@ def npeaks(dataset_index_sub, dataarray,name,type):
         #             cmark.Update()
         #             bg = s.Background(hist, 20, "nodraw nosmoothing")
         #             cmark.Update()
-        #             cmark.SaveAs(os.path.join(os.getcwd(), '../out/peaks/nobackground_' + currentsettings + '.png'))
+        #             cmark.SaveAs(os.path.join(os.getcwd(), './../out/peaks/nobackground_' + currentsettings + '.png'))
         #             cmark.Close()
 
         ## First define peaks for full sequence from baseline untill last sequence
@@ -749,7 +748,7 @@ def npeaks(dataset_index_sub, dataarray,name,type):
         np = s.Search(hist, sigmapeaksinterval, "noMarkov same nobackground", peakamplitude)
         bg = s.Background(hist, 20, "Compton same")
         cmark.Update()
-        dir = os.path.join(os.getcwd(), '../out/peaks' + name + '/overview/')
+        dir = os.path.join(os.getcwd(), './../out/peaks' + name + '/overview/')
         ensure_dir(dir)
         cmark.SaveAs(dir + 'OverviewOf'+name+'Peaks_' + respondent + '.png')
         cmark.Close()
@@ -774,7 +773,7 @@ def npeaks(dataset_index_sub, dataarray,name,type):
                 ts = TSpectrum()
                 np = ts.Search(hist, sigmapeaksinterval, "noMarkov same nobackground", peakamplitude) / float(len(dataset_index_sub))
                 cmark.Update()
-                dir = os.path.join(os.getcwd(), '../out/peaks'+name+'/'+EventBinsNames[respondent][clipindex]+'/')
+                dir = os.path.join(os.getcwd(), './../out/peaks'+name+'/'+EventBinsNames[respondent][clipindex]+'/')
                 ensure_dir(dir)
                 cmark.SaveAs(dir+'sequencepeaks_'+ respondent + '.png')
                 cmark.Close()
@@ -1026,16 +1025,96 @@ def levene(*args, **kwds):
     pval = scistats.distributions.f.sf(W, k - 1, Ntot - k)  # 1 - cdf
     return W, pval
 
+def f_oneway_custom(*args):
+    """
+    Performs a 1-way ANOVA.
+
+    The one-way ANOVA tests the null hypothesis that two or more groups have
+    the same population mean.  The test is applied to samples from two or
+    more groups, possibly with differing sizes.
+
+    Parameters
+    ----------
+    [sample1, sample2, ...] : list of arrays
+        The sample measurements for each group.
+
+    Returns
+    -------
+    statistic : float
+        The computed F-value of the test.
+    pvalue : float
+        The associated p-value from the F-distribution.
+
+    Notes
+    -----
+    The ANOVA test has important assumptions that must be satisfied in order
+    for the associated p-value to be valid.
+
+    1. The samples are independent.
+    2. Each sample is from a normally distributed population.
+    3. The population standard deviations of the groups are all equal.  This
+       property is known as homoscedasticity.
+
+    If these assumptions are not true for a given set of data, it may still be
+    possible to use the Kruskal-Wallis H-test (`scipy.stats.kruskal`) although
+    with some loss of power.
+
+    The algorithm is from Heiman[2], pp.394-7.
+
+
+    References
+    ----------
+    .. [1] Lowry, Richard.  "Concepts and Applications of Inferential
+           Statistics". Chapter 14.
+           http://faculty.vassar.edu/lowry/ch14pt1.html
+
+    .. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
+
+    .. [3] McDonald, G. H. "Handbook of Biological Statistics", One-way ANOVA.
+           http://http://www.biostathandbook.com/onewayanova.html
+    """
+
+    args = [np.asarray(arg, dtype=float) for arg in args[0]]
+    # ANOVA on N groups, each in its own array
+    num_groups = len(args)
+    alldata = np.concatenate(args)
+    bign = len(alldata)
+
+    # Determine the mean of the data, and subtract that from all inputs to a
+    # variance (via sum_of_sq / sq_of_sum) calculation.  Variance is invariance
+    # to a shift in location, and centering all data around zero vastly
+    # improves numerical stability.
+    offset = alldata.mean()
+    alldata -= offset
+
+    sstot = scistats.stats._sum_of_squares(alldata) - (scistats.stats._square_of_sums(alldata) / float(bign))
+    ssbn = 0
+    for a in args:
+        ssbn += scistats.stats._square_of_sums(a - offset) / float(len(a))
+
+    # Naming: variables ending in bn/b are for "between treatments", wn/w are
+    # for "within treatments"
+    ssbn -= (scistats.stats._square_of_sums(alldata) / float(bign))
+    sswn = sstot - ssbn
+    dfbn = num_groups - 1
+    dfwn = bign - num_groups
+    msb = ssbn / float(dfbn)
+    msw = sswn / float(dfwn)
+    f = msb / msw
+
+    prob = scistats.stats.special.fdtrc(dfbn, dfwn, f)   # equivalent to stats.f.sf
+
+    return f, prob
 
 def ANOVA(dataset_index_sub, dataarray,timewindow):
     """Calculate the intervariance using levenes test due to its robustness over F-test for non-normality in distributions.
     Calculation is performed for each sequence/bin and returned as a two histograms, one with the result per bin and the other with p-value"""
     #glboal_mean_hist = TH1F('glboal_mean_hist', 'glboal_mean_hist', 100, 0, 1)
     # define two histos for the teststatic and p-value results for each sequence
-    histtest_median = TH1F("anova_teststatistic_median", "anova_teststatistic_median", int(test_length/timewindow+1), 0, test_length)
-    histpval_median = TH1F("anova_pval_median", "anova_pval_median", int(test_length/timewindow+1), 0, test_length)
-    histtest_mean = TH1F("anova_teststatistic_mean", "anova_teststatistic_mean", int(test_length/timewindow+1), 0, test_length)
-    histpval_mean = TH1F("anova_pval_mean", "anova_pval_mean", int(test_length/timewindow+1), 0, test_length)
+    histtest_median = TH1F("levene_teststatistic_median", "levene_teststatistic_median", int(test_length/timewindow+1), 0, test_length)
+    histpval_median = TH1F("levene_pval_median", "levene_pval_median", int(test_length/timewindow+1), 0, test_length)
+    histtest_anova = TH1F("anova_teststatistic_anova", "anova_teststatistic_anova", int(test_length/timewindow+1), 0, test_length)
+    histpval_anova = TH1F("anova_pval_anova", "anova_pval_anova", int(test_length/timewindow+1), 0, test_length)
     #respondent_bin_dist = TH1F("respondent_bin_dist", "respondent_bin_dist", 20001, 0, 20)
 
     tasks = []
@@ -1061,12 +1140,13 @@ def ANOVA(dataset_index_sub, dataarray,timewindow):
         W, pval = levene(samples, center='median')
         histtest_median.Fill(binmin * timewindow, W)
         histpval_median.Fill(binmin * timewindow, pval)
-        W2, pval2 = levene(samples, center='mean')
-        histtest_mean.Fill(binmin * timewindow, W2)
-        histpval_mean.Fill(binmin * timewindow, pval2)
+        #W2, pval2 = levene(samples, center='mean')
+        W2, pval2 = f_oneway_custom(samples)
+        histtest_anova.Fill(binmin * timewindow, W2)
+        histpval_anova.Fill(binmin * timewindow, pval2)
     print "done filling histograms"
 
-    return histtest_median, histpval_median, histtest_mean, histpval_mean
+    return histtest_median, histpval_median, histtest_anova, histpval_anova
 
 
 def getSamplesPerTimebin(dataarray, dataset_index_sub, timewindow, binmin):
@@ -1098,14 +1178,14 @@ def prep_and_save_hist(thehist, name, title):
     thehist.SetFillColor(4)
     thehist.SetFillStyle(3004)
     thehist.SetLineColor(4)
-    thehist.SaveAs('../out/rootfiles/hist_'+name+'.root')
+    thehist.SaveAs('./../out/rootfiles/hist_'+name+'.root')
     # meaneda_full_range.Write()
     c = TCanvas("c", "c", 1200, 800)
     c.cd()
     thehist.Draw("LBAR3")
     c.Update()
-    c.SaveAs(os.path.join(os.getcwd(), '../out/results/'+name+'.png'))
-    c.SaveAs('../out/rootfiles/'+name+'.root')
+    c.SaveAs(os.path.join(os.getcwd(), './../out/results/'+name+'.png'))
+    c.SaveAs('./../out/rootfiles/'+name+'.root')
 
 def prep_and_save_hist_plain(thehist, name, title):
     thehist.GetYaxis().SetTitle(title)
@@ -1115,11 +1195,11 @@ def prep_and_save_hist_plain(thehist, name, title):
     thehist.SetFillColor(4)
     thehist.SetFillStyle(3004)
     thehist.SetLineColor(4)
-    thehist.SaveAs('../out/rootfiles/hist_'+name+'.root')
+    thehist.SaveAs('./../out/rootfiles/hist_'+name+'.root')
     # meaneda_full_range.Write()
     c = TCanvas("c", "c", 1200, 800)
     c.cd()
     thehist.Draw()
     c.Update()
-    c.SaveAs(os.path.join(os.getcwd(), '../out/results/' + name + '.png'))
-    c.SaveAs('../out/rootfiles/'+name+'.root')
+    c.SaveAs(os.path.join(os.getcwd(), './../out/results/' + name + '.png'))
+    c.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/'+name+'.root'))
