@@ -1,8 +1,12 @@
 # coding=utf-8
 
 # output to file:
-f = open('../out/output.txt', 'w')
-# f = open(os.path.join(os.getcwd(), '../out/output.txt'), 'w')
+import os
+
+import sys
+
+f = open(os.path.join(sys.path[0],'../out/output.txt'), 'w')
+# f = open(os.path.join(os.getcwd(), 'os.path.join(sys.path[0],"../out/output.txt'), 'w')
 # ASSUMPTIONS #
 # timesteps of 32ms so 48*32/1000 s = 1,536 s
 # 5 * 1000 / 32 = 156,25 ~ 156
