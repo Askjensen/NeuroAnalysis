@@ -88,6 +88,7 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     histphasicfull.GetXaxis().SetTitle('Time [s]')
     histphasicfull.GetYaxis().SetTitleOffset(1.4)
     histphasicfull.SetStats(False)
+
     histpeaksfull = TH1F("histpeaksfull", "Peaks per respondent", (timeinterval + timewindow) / timewindow, 0,
                           timeinterval)
     histpeaksfull.GetYaxis().SetTitle('Peak component  / ' + str(timewindow) + ' sec.')
@@ -164,6 +165,29 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     if(histpeaksfull.GetMaximum()>maxvaly): maxvaly = histpeaksfull.GetMaximum()
     canvas.cd()
 
+    histphasicmean = histphasicfull.Clone("histphasicmean")
+    histphasicmean.Scale(1./len(dataset_index_sub))
+    histphasicmean.GetYaxis().SetTitle('#mu_{Phasic}  / ' + str(timewindow) + ' sec.')
+    histphasicmean.GetXaxis().SetTitle('Time [s]')
+    histphasicmean.GetYaxis().SetTitleOffset(1.4)
+    histphasicmean.Draw()
+    # leg.Draw()
+    canvas.Update()
+    histphasicmean.SaveAs(os.path.join(sys.path[0], '../out/rootfiles/timedistributionofmeanphasic' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0], '../out/results/timedistributionofmeanphasic_' + name + 'overview' + '.png'))
+
+    histmean = histphasicfull.Clone("histmean")
+    histmean.Add(histtonicfull)
+    histmean.Scale(1. / len(dataset_index_sub))
+    histmean.GetYaxis().SetTitle('#mu_{total}  / ' + str(timewindow) + ' sec.')
+    histmean.GetXaxis().SetTitle('Time [s]')
+    histmean.GetYaxis().SetTitleOffset(1.4)
+    histmean.Draw()
+    # leg.Draw()
+    canvas.Update()
+    histmean.SaveAs(os.path.join(sys.path[0], '../out/rootfiles/timedistributionofmean' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0], '../out/results/timedistributionofmean_' + name + 'overview' + '.png'))
+
     print "correlation between phasic and number of peaks: " + str(histphasicVSpeaksx.GetCorrelationFactor())
     print "correlation between tonic and number of peaks: " + str(histtonicVSpeaksx.GetCorrelationFactor())
     print "correlation between phasic and tonic: " + str(histphasicVStonic.GetCorrelationFactor())
@@ -198,8 +222,8 @@ def createplotsFullRange(dataset_index_sub, dataarray,timewindow,name):
     histpeaksfull.Draw()
     #leg.Draw()
     canvas.Update()
-    histpeaksfull.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionof' + name + 'overview' + '.root'))
-    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionof_' + name + 'overview' + '.png'))
+    histpeaksfull.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/timedistributionofpeaks' + name + 'overview' + '.root'))
+    canvas.SaveAs(os.path.join(sys.path[0],'../out/results/timedistributionofpeaks_' + name + 'overview' + '.png'))
 
     histrawEDA.GetYaxis().SetRangeUser(0, histpeaksphasicamp.GetMaximum()*1.3)
     histrawEDA.GetXaxis().SetRangeUser(0, maxvalx)

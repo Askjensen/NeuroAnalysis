@@ -28,6 +28,7 @@ event_data = 'tag__info_StudioEventData'
 delimiter = ';'
 
 ## add constant to ensure no negative EDA values - if not distributions normalised to unity can flip EDA signal sign for some reagions.
+#TOBII / BSS adds a constant to all binvalues as desribed in mail from Dr- hornecker. This can be negative and can result in negative values for many bins.
 addconstant = True
 
 # List of events in the data - these are the names defined in tobii and should be given as a list

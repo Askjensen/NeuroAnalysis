@@ -30,19 +30,20 @@ peakspd = False #done
 #Create distributions for each respondent with normalized phasic component of data
 phasic = False #done
 
-### Create comparision plots for eda and/or PD data for sequences in Comparison_list
+### Create full range plots of eda, phasic, tonic and peak values in each timebin with size
+## defined in the definition file (timewindow, default: 10 seconds).
 rawedapeaks = True
 rawpdpeaks = False
 
 #plot test-statistic and p-value for ANOVA and levene test of variations
-doAnova = True
+doAnova = False
 
 #plot mean values for sequences:
 meanraw = True #done
 meanphasic = True
 meantonic = True
 
-#do further overvieplots:
+#do further overvieplots: needs revision, not working and disabled
 dooverview = False
 
 import bin.definitions
@@ -106,9 +107,9 @@ def runmain():
     if doAnova:
         anova_hist_median,anova_pval_hist_median,anova_hist_mean,anova_pval_hist_mean = ANOVA(bin.definitions.dataset_index, eda_data_series,timewindow)
         prep_and_save_hist(anova_hist_median,'levene_teststatistic_median','levene teststatistic using median for ANOVA per timebin')
-        prep_and_save_hist(anova_pval_hist_median,'levene_teststatistic_median','levene p-value using median for ANOVA per timebin')
-        prep_and_save_hist(anova_hist_mean,'anova_teststatistic_anova','levene teststatistic using median for ANOVA per timebin')
-        prep_and_save_hist(anova_pval_hist_mean,'anova_teststatistic_anova','levene p-value using median for ANOVA per timebin')
+        prep_and_save_hist(anova_pval_hist_median,'levene_pval_median','levene p-value using median for ANOVA per timebin')
+        prep_and_save_hist(anova_hist_mean,'anova_teststatistic','ANOVA teststatistic per timebin')
+        prep_and_save_hist(anova_pval_hist_mean,'anova_pval','ANOVA p-value per timebin')
 
     if(peakseda):
         ################ find peaks, phasic and tonic distributions in the data ######################
