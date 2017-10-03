@@ -109,14 +109,14 @@ Comparison_list = {'1':['Baseline.avi','Baseline.avi']}
 #Comparison_list = {'1':['Baseline.avi','Baseline.avi']}
 
 #Path to the directory containing datafiles (output ASCII txt-files from Biometric Software Suite)
-folder_path = 'C:/Data/HistorienOmDK/alle/'
+#folder_path = 'C:/Data/HistorienOmDK/alle/'
 #folder_path = 'C:/Data/HistorienOmDK/alder/over 50/'
 #folder_path = 'C:/Data/HistorienOmDK/alder/under 40/'
 #folder_path = 'C:/Data/HistorienOmDK/women/'
 #folder_path = 'C:/Data/HistorienOmDK/males/'
 #folder_path = 'C:/Data/HistorienOmDK/alleinklfejl/'
 #folder_path = 'C:/Data/HistorienOmDK/rest/'
-#folder_path = 'C:/Data/HistorienOmDK/test/'
+folder_path = 'C:/Data/HistorienOmDK/test/'
 
 filename_ext = '.txt'
 index1_names = list()

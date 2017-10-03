@@ -22,7 +22,7 @@ from ROOT import * #TH1F, TSpectrum, TFile, TCanvas, TLegend, gStyle, TAxis
 #from rootpy.plotting import Hist
 
 from bin.definitions import delimiter, folder_path, EventBinsPos, binscale, sigmapeaksinterval, peakamplitude, \
-    EventBinsNames, f, dataset_event_names, filelist, Events_list, addconstant, test_length
+    EventBinsNames, f, dataset_event_names, filelist, Events_list, addconstant, test_length, timewindow
 
 
 def dataextract(files, label):
@@ -664,7 +664,7 @@ def testsettings(dataset_index_sub, dataarray):
     nres = len(dataset_index_sub)
     for respondent in dataset_index_sub:
         respdataarray = getrespondent(dataarray, respondent)
-        stimulipositions = [0,14,25,35,48,60,70,80,95,106]
+        stimulipositions = [0,14,24,36,48,60,71,81,96,109]
 
         hist = TH1F(str(respondent) + "hist", str(respondent) + "hist", int((respdataarray.index[-1]*binscale)),
                     respdataarray.index[0], respdataarray.index[-1])
@@ -802,10 +802,11 @@ def npeaks(dataset_index_sub, dataarray,name,type):
                 cmark.SaveAs(dir+'sequencepeaks_'+ respondent + '.png')
                 cmark.Close()
                 #test = EventBinsNames[respondent][clipindex]
-                if('phasic'):
-                    peakshist.Fill(EventBinsNames[respondent][clipindex], np)
-                else:
-                    peakshist.Fill(EventBinsNames[respondent][clipindex], np)
+                peakshist.Fill(EventBinsNames[respondent][clipindex], np)
+                # if('phasic'):
+                #     peakshist.Fill(EventBinsNames[respondent][clipindex], np)
+                # else:
+                #     peakshist.Fill(EventBinsNames[respondent][clipindex], np)
                     #phasichist.Fill(EventBinsNames[respondent][clipindex], np)
                 #tonichist.Fill(EventBinsNames[respondent][clipindex], np)
                 #hist.Scale(orig_integral/hist.Integral())
@@ -872,69 +873,149 @@ def findPrincipalComponent(dataset_index_sub, dataarray):
 
     return fullarray
 
-def meaneda(dataset_index_sub, dataarray,type):
-    nbins = (len(dataset_event_names[0]) / 2)
-    values0 = TH1F("RMSofEDAperseq", "#sigma_{sequence}", nbins, 0, nbins)
-    values1 = TH1F("meanEDAperseq", "#mu_{sequence} #pm #sigma_{sequence}", nbins, 0, nbins)
-    values2 = TH1F("meanEDAperseqerr", "#mu_{sequence} #pm sigma_{#mu}", nbins, 0, nbins)
-    values1.Sumw2()
-    ibin = 0
-    labels = sorted(dataset_event_names[0])
-    for bin in range(0, len(dataset_event_names[0])):
-        if bin % 2 == 0:
-            ibin += 1
-            values1.GetXaxis().SetBinLabel(ibin, labels[bin])
-            values2.GetXaxis().SetBinLabel(ibin, labels[bin])
+def meaneda(dataset_index_sub, dataarray,type,sequences=False):
+    if sequences:
+        nbins = (len(dataset_event_names[0]) / 2)
+        values0 = TH1F("RMSofEDAperseq", "#sigma_{sequence}", nbins, 0, nbins)
+        values1 = TH1F("meanEDAperseq", "#mu_{sequence} #pm #sigma_{sequence}", nbins, 0, nbins)
+        values2 = TH1F("meanEDAperseqerr", "#mu_{sequence} #pm sigma_{#mu}", nbins, 0, nbins)
+        values1.Sumw2()
+        ibin = 0
+        labels = sorted(dataset_event_names[0])
+        for bin in range(0, len(dataset_event_names[0])):
+            if bin % 2 == 0:
+                ibin += 1
+                values1.GetXaxis().SetBinLabel(ibin, labels[bin])
+                values2.GetXaxis().SetBinLabel(ibin, labels[bin])
 
-    for respondent in dataset_index_sub:
-        respdataarray = getrespondent(dataarray, respondent)
+        for respondent in dataset_index_sub:
+            respdataarray = getrespondent(dataarray, respondent)
 
-            # loop over series in timeunit of size: peaks_window
-        ## First define peaks per minute for full sequence
-        for clipindex in range(0, len(EventBinsPos[respondent]) - 1):
-            if (clipindex % 2 == 0):
-                hist = TH1F(str(respondent) + str(clipindex) + type +"hist", str(respondent) + str(clipindex) + type + "hist", int(len(respdataarray.values)),respdataarray.values.min(), respdataarray.values.max())
-                s = TSpectrum()
-                if type == 'phasic':
-                    phasichist = TH1F("tmphistphasic", "tmphistphasic",
-                                int(len(respdataarray.index)), respdataarray.index.min(), respdataarray.index.max())
-                    for i in range(0,len(respdataarray.values)):
-                        if respdataarray.index[i] > EventBinsPos[respondent][clipindex]:
-                            if respdataarray.index[i] <= EventBinsPos[respondent][clipindex+1]:
-                                phasichist.Fill(respdataarray.index[i],respdataarray.values[i])
-                    bg = s.Background(phasichist, 20, "Compton same")
-                    phasichist.Add(bg, -1)
-                    for ibin in range(0,phasichist.GetNbinsX()):
-                        hist.Fill(phasichist.GetBinContent(ibin))
-                    phasichist.Delete()
-                elif type == 'tonic':
-                    tonichist = TH1F("tmphisttonic", "tmphisttonic",
-                                      int(len(respdataarray.index)), respdataarray.index.min(),
-                                      respdataarray.index.max())
-                    for i in range(0, len(respdataarray.values)):
-                        if respdataarray.index[i] > EventBinsPos[respondent][clipindex]:
-                            if respdataarray.index[i] <= EventBinsPos[respondent][clipindex + 1]:
-                                tonichist.Fill(respdataarray.index[i], respdataarray.values[i])
-                    tonichist = s.Background(tonichist, 20, "Compton same")
-                    for ibin in range(0, tonichist.GetNbinsX()):
-                        hist.Fill(tonichist.GetBinContent(ibin))
-                    tonichist.Delete()
-                else:
-                    for i in range(0,len(respdataarray.values)):
-                        if respdataarray.index[i] > EventBinsPos[respondent][clipindex]:
-                            if respdataarray.index[i] <= EventBinsPos[respondent][clipindex+1]:
-                                hist.Fill(respdataarray.values[i])
+                # loop over series in timeunit of size: peaks_window
+            ## First define peaks per minute for full sequence
 
-                meanfullrange = hist.GetMean()
-                sigmafullrange = hist.GetRMS()
-                values0.Fill(EventBinsNames[respondent][clipindex], sigmafullrange)
-                values1.Fill(EventBinsNames[respondent][clipindex], meanfullrange)
-                values2.Fill(EventBinsNames[respondent][clipindex], meanfullrange)
-                #values2.SetBinError(values2.FindBin(EventBinsNames[respondent][clipindex]),values2.GetBinError(values2.FindBin(EventBinsNames[respondent][clipindex]))+ / float(len(dataset_index_sub)))
-                hist.Delete()
+            getMeansFromSequences(respdataarray, respondent, type, values0, values1, values2)
+    else:
+        respdataarray = getrespondent(dataarray, dataset_index_sub[0])
+        nbins = int((respdataarray.index.max()-respdataarray.index.min()) / 1000. / timewindow + .5) #bins of size timewindow (given in seconds so converted to intervals in ms
+        if int((getrespondent(dataarray, dataset_index_sub[1]).index.max()-getrespondent(dataarray, dataset_index_sub[1]).index.min()) / 1000. / timewindow + .5) != nbins:
+            print "########### Arghs something is crappy: ################"
+            print respdataarray.index.max()-respdataarray.index.min()
+            print getrespondent(dataarray, dataset_index_sub[1]).index.min()-getrespondent(dataarray, dataset_index_sub[1]).index.max()
+            print nbins
+            print int((getrespondent(dataarray, dataset_index_sub[1]).index.max()-getrespondent(dataarray, dataset_index_sub[1]).index.min()) / 1000. / timewindow + .5)
+            raise IndexError('Different number of bins for respondents')
+
+        values0 = TH1F("RMSofEDAperbin"+type, "#sigma_{timebins}", nbins, 0, nbins*10./60.)
+        values1 = TH1F("meanEDAperbin"+type, "#mu_{timebins} #pm #sigma_{timebins}", nbins, 0, nbins*10./60.)
+        values2 = TH1F("meanEDAperbinerr"+type, "#mu_{timebins} #pm #sigma_{#mu}", nbins, 0, nbins*10./60.)
+        getMeansFromTimebins(dataarray, dataset_index_sub, nbins, type, values0, values1, values2)
+
     for ibin in range(0,values2.GetNbinsX()+1):
         values2.SetBinError(ibin,values0.GetBinContent(ibin))
     return values0,values1,values2
+
+
+def getMeansFromSequences(respdataarray, respondent, type, values0, values1, values2):
+    for clipindex in range(0, len(EventBinsPos[respondent]) - 1):
+        if (clipindex % 2 == 0):
+            hist = TH1F(str(respondent) + str(clipindex) + type + "hist",
+                        str(respondent) + str(clipindex) + type + "hist", int(len(respdataarray.values)),
+                        respdataarray.values.min(), respdataarray.values.max())
+            s = TSpectrum()
+            if type == 'phasic':
+                phasichist = TH1F("tmphistphasic", "tmphistphasic",
+                                  int(len(respdataarray.index)), respdataarray.index.min(), respdataarray.index.max())
+                for i in range(0, len(respdataarray.values)):
+                    if respdataarray.index[i] > EventBinsPos[respondent][clipindex]:
+                        if respdataarray.index[i] <= EventBinsPos[respondent][clipindex + 1]:
+                            phasichist.Fill(respdataarray.index[i], respdataarray.values[i])
+                bg = s.Background(phasichist, 20, "Compton same")
+                phasichist.Add(bg, -1)
+                for ibin in range(0, phasichist.GetNbinsX()):
+                    hist.Fill(phasichist.GetBinContent(ibin))
+                phasichist.Delete()
+            elif type == 'tonic':
+                tonichist = TH1F("tmphisttonic", "tmphisttonic",
+                                 int(len(respdataarray.index)), respdataarray.index.min(),
+                                 respdataarray.index.max())
+                for i in range(0, len(respdataarray.values)):
+                    if respdataarray.index[i] > EventBinsPos[respondent][clipindex]:
+                        if respdataarray.index[i] <= EventBinsPos[respondent][clipindex + 1]:
+                            tonichist.Fill(respdataarray.index[i], respdataarray.values[i])
+                tonichist = s.Background(tonichist, 20, "Compton same")
+                for ibin in range(0, tonichist.GetNbinsX()):
+                    hist.Fill(tonichist.GetBinContent(ibin))
+                tonichist.Delete()
+            else:
+                for i in range(0, len(respdataarray.values)):
+                    if respdataarray.index[i] > EventBinsPos[respondent][clipindex]:
+                        if respdataarray.index[i] <= EventBinsPos[respondent][clipindex + 1]:
+                            hist.Fill(respdataarray.values[i])
+
+            meanfullrange = hist.GetMean()
+            sigmafullrange = hist.GetRMS()
+            values0.Fill(EventBinsNames[respondent][clipindex], sigmafullrange)
+            values1.Fill(EventBinsNames[respondent][clipindex], meanfullrange)
+            values2.Fill(EventBinsNames[respondent][clipindex], meanfullrange)
+            # values2.SetBinError(values2.FindBin(EventBinsNames[respondent][clipindex]),values2.GetBinError(values2.FindBin(EventBinsNames[respondent][clipindex]))+ / float(len(dataset_index_sub)))
+            hist.Delete()
+
+def getMeansFromTimebins(dataarray, dataset_index_sub, nbins, type, values0, values1, values2):
+    #loop over bins to store value of each bin
+    for ibin in range(nbins):
+        hist = TH1F("binhistrawEDA"+str(ibin), "raw EDA summed over unity normalised respondents in each timebin",
+                             12000, -100, 12000)
+        #loop over repsondent to get hist of their contribution to each bin, and get mean and RMS from that
+        for respondent in dataset_index_sub:
+            respdataarray = getrespondent(dataarray, respondent)
+            #startpos = getfirstevent(Events_list, EventBinsNames, respondent) #needed?
+            minval = respdataarray.index.min() + ibin * 10 * 1000
+            maxval = respdataarray.index.min() + (ibin + 1) * 10 * 1000
+            s = TSpectrum()
+            if type == 'phasic':
+                phasichist = TH1F("tmphistphasic", "tmphistphasic",
+                                  int(len(respdataarray.index)), respdataarray.index.min(), respdataarray.index.max())
+
+                for i in range(0, len(respdataarray.values)):
+                    if respdataarray.index[i] > minval:
+                        if respdataarray.index[i] <= maxval:
+                            phasichist.Fill(respdataarray.index[i], respdataarray.values[i])
+                #print 'integral of phasichist in phasic: ' + str(phasichist.Integral())
+                #print 'respondent'+str(respondent)
+                bg = s.Background(phasichist, 20, "Compton same")
+                #print 'integral of bg in phasic: ' + str(bg.Integral())
+                phasichist.Add(bg, -1)
+                #print 'integral of phasichist in phasic: ' + str(phasichist.Integral())
+
+                for ibin in range(0, phasichist.GetNbinsX()):
+                    hist.Fill(phasichist.GetBinContent(ibin))
+                phasichist.Delete()
+            elif type == 'tonic':
+                tonichist = TH1F("tmphisttonic", "tmphisttonic",
+                                 int(len(respdataarray.index)), respdataarray.index.min(),
+                                 respdataarray.index.max())
+                for i in range(0, len(respdataarray.values)):
+                    if respdataarray.index[i] > minval:
+                        if respdataarray.index[i] <= maxval:
+                            tonichist.Fill(respdataarray.index[i], respdataarray.values[i])
+                print 'integral of tonichist: ' + str(tonichist.Integral())
+                tonichist = s.Background(tonichist, 20, "Compton same")
+                print 'integral of tonichist where bg is calculated : ' + str(tonichist.Integral())
+                for ibin in range(0, tonichist.GetNbinsX()):
+                    hist.Fill(tonichist.GetBinContent(ibin))
+                tonichist.Delete()
+            else:
+                for i in range(0, len(respdataarray.values)):
+                    if respdataarray.index[i] > minval:
+                        if respdataarray.index[i] <= maxval:
+                            hist.Fill(respdataarray.values[i])
+            meanfullrange = hist.GetMean()
+            sigmafullrange = hist.GetRMS()
+            values0.Fill(ibin, sigmafullrange)
+            values1.Fill(ibin, meanfullrange)
+            values2.Fill(ibin, meanfullrange)
+        hist.Delete()
 
 def levene(*args, **kwds):
     """
@@ -1208,7 +1289,7 @@ def prep_and_save_hist(thehist, name, title):
     c.cd()
     thehist.Draw("LBAR3")
     c.Update()
-    c.SaveAs(os.path.join(os.getcwd(), './../out/results/'+name+'.png'))
+    c.SaveAs(os.path.join(sys.path[0], './../out/results/'+name+'.png'))
     c.SaveAs('./../out/rootfiles/'+name+'.root')
 
 def prep_and_save_hist_plain(thehist, name, title):
@@ -1225,5 +1306,5 @@ def prep_and_save_hist_plain(thehist, name, title):
     c.cd()
     thehist.Draw()
     c.Update()
-    c.SaveAs(os.path.join(os.getcwd(), './../out/results/' + name + '.png'))
-    c.SaveAs(os.path.join(sys.path[0],'../out/rootfiles/'+name+'.root'))
+    c.SaveAs(os.path.join(sys.path[0], './../out/results/' + name + '.png'))
+    c.SaveAs(os.path.join(sys.path[0],'./../out/rootfiles/'+name+'.root'))

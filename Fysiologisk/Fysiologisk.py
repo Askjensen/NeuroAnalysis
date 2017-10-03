@@ -24,7 +24,7 @@ import cProfile
 
 testthtresholds = False
 #Create distributions for each respondent with EDA data
-peakseda = True #done
+peakseda = False #done
 #Create distributions for each respondent with pupil-dillation data
 peakspd = False #done
 #Create distributions for each respondent with normalized phasic component of data
@@ -32,17 +32,18 @@ phasic = False #done
 
 ### Create full range plots of eda, phasic, tonic and peak values in each timebin with size
 ## defined in the definition file (timewindow, default: 10 seconds).
-rawedapeaks = True
+rawedapeaks = False
 rawpdpeaks = False
 
 #plot test-statistic and p-value for ANOVA and levene test of variations
 doAnova = False
 
 #plot mean values for sequences:
-meanraw = True #done
+meanraw = False #done
 meanphasic = True
-meantonic = True
-
+meantonic = False
+#should the mean be calculated per sequence or for each timebin. True for Sequences, False for timebins
+meanFromSequences = False
 #do further overvieplots: needs revision, not working and disabled
 dooverview = False
 
@@ -235,9 +236,10 @@ def runmain():
         ##############################################################################
         #find mean eda for each sequence
         print 'raw: sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err'
-        sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err = meaneda(bin.definitions.dataset_index, eda_data_series,'raw') #raw_normalized
-        prep_and_save_hist(meaneda_full_range, 'meaneda_full_range', '#mu_{sequence} #pm  1 #sigma_{sequence}')
-        prep_and_save_hist(meaneda_full_range_err, 'meaneda_full_range_err', '#mu_{sequence} #pm  1 #sigma_{#mu}')
+        sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err = meaneda(bin.definitions.dataset_index, eda_data_series,'raw',meanFromSequences) #raw_normalized
+        name = "sequence" if meanFromSequences else str(timewindow)+" sec. bin"
+        prep_and_save_hist(meaneda_full_range, 'meaneda_full_range', '#mu_{'+name+'} #pm  1 #sigma_{'+name+'}')
+        prep_and_save_hist(meaneda_full_range_err, 'meaneda_full_range_err', '#mu_{'+name+'} #pm 1 #sigma_{#mu}')
         prep_and_save_hist_plain(sigmaofeda_full_range, 'sigmaofeda_full_range', '#sigma_{#mu}')
 
 
@@ -259,10 +261,11 @@ def runmain():
         ######################### mean EDA on normalized EDA #########################
         ##############################################################################
         #find mean eda for each sequence
+        name = "sequence" if meanFromSequences else str(timewindow)+" sec. bin"
         print 'tonic: sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err'
-        sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err = meaneda(bin.definitions.dataset_index, eda_data_series,'tonic')
-        prep_and_save_hist(meaneda_full_range, 'meanedatonic_full_range', '#mu_{sequence} #pm  1 #sigma_{sequence}')
-        prep_and_save_hist(meaneda_full_range_err, 'meanedatonic_full_range_err', '#mu_{sequence} #pm  1 #sigma_{#mu}')
+        sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err = meaneda(bin.definitions.dataset_index, eda_data_series,'tonic',meanFromSequences)
+        prep_and_save_hist(meaneda_full_range, 'meanedatonic_full_range', '#mu_{'+name+'} #pm  1 #sigma_{'+name+'}')
+        prep_and_save_hist(meaneda_full_range_err, 'meanedatonic_full_range_err', '#mu_{'+name+'} #pm  1 #sigma_{#mu}')
         prep_and_save_hist_plain(sigmaofeda_full_range, 'sigmaoftoniceda_full_range', '#sigma_{#mu} tonic')
 
     if(meanphasic): ############this is the old definiton of time-avaraging!!!!
@@ -271,11 +274,12 @@ def runmain():
         ################ mean EDA based on phasic component of data ###############
         ###########################################################################
         #find mean eda for each sequence of phasic data
+        name = "sequence" if meanFromSequences else str(timewindow)+" sec. bin"
         print 'phasic: sigmaofeda_full_range,meaneda_full_range,meaneda_full_range_err'
-        sigmaofeda_full_range,meanphasic_full_range,meanphasic_full_range_err = meaneda(bin.definitions.dataset_index, eda_data_series,'phasic')
-        prep_and_save_hist(meanphasic_full_range, 'meanphasic_full_range', 'Mean Phasic per sequence')
-        prep_and_save_hist(meanphasic_full_range_err, 'meanphasic_full_range_err', 'Mean Phasic per sequence')
-        prep_and_save_hist_plain(sigmaofeda_full_range, 'sigmaofphasiceda_full_range', 'Standard deviation of Phasic part of EDA per sequence')
+        sigmaofeda_full_range,meanphasic_full_range,meanphasic_full_range_err = meaneda(bin.definitions.dataset_index, eda_data_series,'phasic',meanFromSequences)
+        prep_and_save_hist(meanphasic_full_range, 'meanphasic_full_range', 'Mean Phasic per '+name)
+        prep_and_save_hist(meanphasic_full_range_err, 'meanphasic_full_range_err', 'Mean Phasic per '+name)
+        prep_and_save_hist_plain(sigmaofeda_full_range, 'sigmaofphasiceda_full_range', 'Standard deviation of Phasic part of EDA per '+name)
 
         # find phasic mean per interval for each sequence - histogram as for peaks
         #todo: make this with true phasic if interval comparisons are needed:
