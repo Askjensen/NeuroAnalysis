@@ -32,7 +32,7 @@ phasic = False #done
 
 ### Create full range plots of eda, phasic, tonic and peak values in each timebin with size
 ## defined in the definition file (timewindow, default: 10 seconds).
-rawedapeaks = False
+rawedapeaks = True
 rawpdpeaks = False
 
 #plot test-statistic and p-value for ANOVA and levene test of variations
@@ -40,7 +40,7 @@ doAnova = False
 
 #plot mean values for sequences:
 meanraw = False #done
-meanphasic = True
+meanphasic = False
 meantonic = False
 #should the mean be calculated per sequence or for each timebin. True for Sequences, False for timebins
 meanFromSequences = False
